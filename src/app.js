@@ -1,26 +1,45 @@
-
-const express = require('express');
+const express= require('express')
 const app = express();
-const morgan=require('morgan');
 const bodyParser=require('body-parser');
 const mongoose=require('mongoose');
+require('dotenv').config();
+var path = require('path');
+var logger = require('morgan');
 
+
+
+
+
+
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
 
 //settings
-app.set('port', process.env.PORT || 8080);
-app.set('json spaces', 2);
-
-//Middleware
-app.use(morgan('dev'));
-app.use(express.urlencoded({ extended: false }));
+const port = process.env.PORT || 8080;
 app.use(express.json());
+
+
 
 //Routes
-app.use(express.json());
-app.use(require('./routes/routes'));
+const users=require('./routes/users');
+app.use('/users', users);
 
 
-// Starting the server
-app.listen(app.get('port'), () => {
-    console.log(`Server listening on port ${app.get('port')}`);
-});
+// DB configuration and connection create
+  mongoose.connect(process.env.URL, { useNewUrlParser: true });
+  const db = mongoose.connection;
+  db.on('error', console.error.bind(console, 'connection error:'));
+  db.once('open', function() {
+    console.log("Connected to MongoDB");
+    });
+
+
+
+    
+    app.listen(port, () => {
+        console.log(`Server is running on port ${port}`);
+      });
+
