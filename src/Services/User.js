@@ -1,5 +1,5 @@
 import { hashPassword, comparePassword } from '../utils/bcrypt.js';
-import User from '../models/user.js';
+import User from '../Models/User.js';
 
 export const fetchUser = async (req, res) => {
   const { user_id } = req.query;

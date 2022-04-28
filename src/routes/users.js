@@ -1,52 +1,14 @@
-const express = require('express');
-const router = express.Router();
-const userModel = require('../Models/User');
+import { Router } from 'express';
+import * as UserService from '../Services/User.js';
 
-//Login
-router.post('/login', async (req, res) => {
-    const {username, password} = req.body;
-    const user = await userModel.findOne({username, password});
-    if(user){
-        res.json(user);
-    }else{
-        res.status(404).json({msg: 'User not found'});
-    }
-});
+const router = Router();
 
-//Register
-router.post('/register', async (req, res) => {
-    const {display_name, username, password} = req.body;
-    const user = new userModel({username, password, display_name});
-    await user.save();
-    res.json({status: 'User saved'});
-});
+router.get('/', UserService.fetchUser);
 
-//fetch user
-router.post("/prev-login",async (req,res)=>{
-    const {_id} = req.body;
-    const user = await userModel.findById(_id);
-    if(user){
-        res.json(user);
-    }else{
-        res.status(404).json({msg: 'User not found'});
-    }
-});
+router.post('/register', UserService.register);
 
-//Get all users
-router.get("/", async (req, res) => {
-    const users = await userModel.find();
-    res.json(users);
-});
+router.post('/login', UserService.login);
 
-//get user by id
-router.get("/:id", async (req, res) => {
-    const { id } = req.params;
-    const user = await userModel.findById(id);
-    if(user){
-        res.json(user);
-    }else{
-        res.status(404).json({msg: 'User not found'});
-    }
-});
+router.post('/prev-login', UserService.prevLogin);
 
-module.exports = router;
+export default router;

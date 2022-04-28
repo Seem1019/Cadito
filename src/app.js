@@ -1,21 +1,28 @@
-const express= require('express')
+import dotenv from 'dotenv'
+dotenv.config()
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
+import cors from 'cors';
+import mongoose from 'mongoose'
+
+
+import usersRouter from './routes/users.js';
+import postsRouter from './routes/posts.js';
+import reviewsRouter from './routes/reviews.js';
+import cartsRouter from './routes/carts.js';
+import historiesRouter from './routes/histories.js';
+
+
+
 const app = express();
-const bodyParser=require('body-parser');
-const mongoose=require('mongoose');
-require('dotenv').config();
-var path = require('path');
-var logger = require('morgan');
 
-
-
-
-
-
-
+//Middleware
 app.use(logger('dev'));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieParser());
 
 //settings
 const port = process.env.PORT || 8080;
@@ -23,9 +30,12 @@ app.use(express.json());
 
 
 
-//Routes
-const users=require('./routes/users');
-app.use('/users', users);
+// Routes
+app.use('/users', usersRouter);
+app.use('/posts', postsRouter);
+app.use('/reviews', reviewsRouter);
+app.use('/cart', cartsRouter);
+app.use('/history', historiesRouter);
 
 
 // DB configuration and connection create
