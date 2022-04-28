@@ -2,22 +2,30 @@
   "name": "Cadito",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
     "express": "^4.17.3",
-    "mongose": "0.0.2-security",
+    "mongoose": "^6.3.0",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.17.9",
+    "@babel/node": "^7.16.8",
+    "@babel/preset-env": "^7.16.11",
+    "eslint": "^8.13.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
     "nodemon": "^2.0.15"
   },
-  	
-
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon --exec babel-node --watch src src/app.js",
+    "lint": "eslint src src/app.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Seem",
   "license": "ISC"
 }
